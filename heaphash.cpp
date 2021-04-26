@@ -201,7 +201,7 @@ bool heapHash::search(Node* n){
     int index = hash(toHash)%tableSize;
 
     
-    for(int i = 0; i < tableSize/2; i++){ // replaced while loop, both work
+    for(int i = 0; i < tableSize/2 +1; i++){ // replaced while loop, both work
 
         if(hashTable[(index+i*i)%tableSize].tag == 1){ // if slot is not empty/deleted
             if(hashTable[(index+i*i)%tableSize].info == n->info){ // and its string matches the one we're looking for
@@ -226,7 +226,7 @@ int heapHash::searchIndex(Node* n){ // same function as search but returns the i
 
     bool done = false;
     int i = 0;
-    for(int i = 0; i < tableSize/2; i++){
+    for(int i = 0; i < tableSize/2 +1; i++){
         if(hashTable[(index+i*i)%tableSize].tag == 1){ 
             if(hashTable[(index+i*i)%tableSize].info == n->info){
                 //cout<<"searching for "<<n->info<<endl;
@@ -250,7 +250,7 @@ void heapHash::del(string s){
     int index = hash(toHash)%tableSize;
 
     
-    for(int i = 0; i <tableSize/2; i++){
+    for(int i = 0; i <tableSize/2+1; i++){
         if( (hashTable[(index+i*i)%tableSize].tag == 1) ){ // if not empty
             if( (hashTable[(index+i*i)%tableSize].info == s) ){ // if the strings match
                 // cout<<"supposed to delete: "<<s<<endl;
@@ -272,7 +272,7 @@ void heapHash::update(string s, int newIndex){
     hash<int> hash;
     int index = hash(toHash)%tableSize;
 
-    for(int i = 0; i < tableSize/2; i++){
+    for(int i = 0; i < tableSize/2 +1; i++){
         if(hashTable[(index+i*i)%tableSize].tag == 1){ // if slot isn't empty
             if(hashTable[(index+i*i)%tableSize].info == s){ // and the info matches the input we're looking for
                 hashTable[(index+i*i)%tableSize].index = newIndex; // update the index
