@@ -12,6 +12,7 @@ int nextPrime(int n){ // calculate tableSize
             i=2;
         }
     }
+    //cout<<n<<endl;
     return n;
 }
 
@@ -78,8 +79,8 @@ void heapHash::deleteMin(){
         string toDel = heap[1].info;
 
         swap(heap[1],heap[population]);
-        del(toDel);
         update(newMin,1);
+        del(toDel);
 
         population--;
         percolateDown(1);
@@ -151,10 +152,10 @@ void heapHash::percolateDown(int ind){
         string oldParent = heap[ind].info;
         string oldChild = heap[min].info;
 
+        
         update(oldParent, newParent);
         update(oldChild, newChild);
         swap(heap[ind],heap[min]);
-
 
         percolateDown(min);
     }
@@ -201,22 +202,15 @@ bool heapHash::search(Node* n){
     int index = hash(toHash)%tableSize;
 
     
-    for(int i = 0; i < tableSize/2+1; i++){ // replaced while loop, both work
+    for(int i = 0; i < tableSize/2; i++){ // replaced while loop, both work
 
         if(hashTable[(index+i*i)%tableSize].tag == 1){ // if slot is not empty/deleted
             if(hashTable[(index+i*i)%tableSize].info == n->info){ // and its string matches the one we're looking for
                 return true;
             }
         }
-        
-        if(hashTable[(index+i*i)%tableSize].tag == 0){ // if the slot is empty
-            return false;
-        }
-
-        if(hashTable[(index+i*i)%tableSize].tag == 2){ // is the slot was deleted
-            return false;
-        }
     }
+    return false;
 }
 
 int heapHash::searchIndex(Node* n){ // same function as search but returns the index of the node in the hash table
@@ -224,22 +218,14 @@ int heapHash::searchIndex(Node* n){ // same function as search but returns the i
     hash<int> hash;
     int index = hash(toHash)%tableSize;
 
-    bool done = false;
-    int i = 0;
-    for(int i = 0; i < tableSize/2+1; i++){
+    for(int i = 0; i < tableSize/2; i++){
+
         if(hashTable[(index+i*i)%tableSize].tag == 1){ 
             if(hashTable[(index+i*i)%tableSize].info == n->info){
                 //cout<<"searching for "<<n->info<<endl;
                 //cout<<"returning: "<<hashTable[(index+i*i)%tableSize].info<<endl;
                 return hashTable[(index+i*i)%tableSize].index;
             }
-            continue;
-        }
-        if(hashTable[(index+i*i)%tableSize].tag == 0){
-            return -1;
-        }
-        if(hashTable[(index+i*i)%tableSize].tag == 2){
-            continue;
         }
     }
 }
@@ -250,7 +236,7 @@ void heapHash::del(string s){
     int index = hash(toHash)%tableSize;
 
     
-    for(int i = 0; i <tableSize/2+1; i++){
+    for(int i = 0; i <tableSize/2; i++){
         if( (hashTable[(index+i*i)%tableSize].tag == 1) ){ // if not empty
             if( (hashTable[(index+i*i)%tableSize].info == s) ){ // if the strings match
                 // cout<<"supposed to delete: "<<s<<endl;
@@ -258,12 +244,7 @@ void heapHash::del(string s){
                 hashTable[(index+i*i)%tableSize].tag = 2;
                 return;
             }
-            continue;
-        }
-        if(hashTable[(index+i*i)%tableSize].tag == 2){ // if this slot was already deleted, i++ try again
-            continue;
-        }
-        
+        }        
     }
 }
 
@@ -272,25 +253,12 @@ void heapHash::update(string s, int newIndex){
     hash<int> hash;
     int index = hash(toHash)%tableSize;
 
-    for(int i = 0; i < tableSize/2+1; i++){
+    for(int i = 0; i < tableSize/2; i++){
         if(hashTable[(index+i*i)%tableSize].tag == 1){ // if slot isn't empty
             if(hashTable[(index+i*i)%tableSize].info == s){ // and the info matches the input we're looking for
                 hashTable[(index+i*i)%tableSize].index = newIndex; // update the index
                 break;
             }
-            continue; // didn't match, i++ try again
-        }
-        if(hashTable[(index+i*i)%tableSize].tag == 0){ // for debugging lol
-            while(true)
-            cout<<"update error"<<endl;
-
-        }
-        if(hashTable[(index+i*i)%tableSize].tag == 2){ // slot was deleted i++ try again
-            continue;
         }
     }
 }
-
-
-
-
