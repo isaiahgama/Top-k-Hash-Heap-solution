@@ -46,7 +46,8 @@ int main(int argc, char* argv[]){
     ofstream myFile;
     myFile.open(argv[2]);
     string s1 = "";
-    for(int i = 0; i < atoi(argv[3]); i++){
+    int timesToPrint = m.getPopulation();
+    for(int i = 0; i < timesToPrint; i++){
         s1 = m.toPrint();
         myFile << s1;
     }
